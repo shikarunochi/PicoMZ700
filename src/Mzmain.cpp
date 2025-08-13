@@ -883,7 +883,8 @@ int checkPicoCalcKey() {
 }
 
 String selectMzt() {
-  //TODO:音を鳴らしているなら止める
+  //音を鳴らしているなら止める
+	tone(BUZZER_PIN,0);
 
   File fileRoot;
   String fileList[MAX_FILES];
@@ -1264,7 +1265,8 @@ void systemMenu()
     "PCG",
     ""
   };
- //TODO:音が鳴っていたら止める
+ //音が鳴っていたら止める
+ 	tone(BUZZER_PIN,0);
 
   delay(10);
   m5lcd.fillScreen(TFT_BLACK);
@@ -1361,6 +1363,7 @@ void systemMenu()
               break;
             case SOUND_INDEX:
               mzConfig.enableSound = !mzConfig.enableSound;
+              needRedraw = true;
               break;
             // case SAVE_IMAGE_INDEX:
             //   saveMZTImage();

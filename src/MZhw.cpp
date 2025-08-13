@@ -640,9 +640,7 @@ int pit_count(void)
 // 8253 SOUND
 /////////////////////////////////////////////////////////////////
 //
-#if defined(_M5CARDPUTER)||defined(USE_MIDI)
 int preFreqtmp = 0;
-#endif
 
 void play8253(void)
 {
@@ -653,78 +651,29 @@ void play8253(void)
 	freqtmp = _8253_stat[0].counter_base;		
 	if (_8253_dat.makesound == 0) {
 	  _8253_dat.setsound = 0;
-		//mzbeep_stop();
-    //M5.Speaker.mute();
-	#if defined(USE_SPEAKER_G25)||defined(USE_SPEAKER_G26)||defined(_M5STICKCPLUS)
-    ledcWriteTone(LEDC_CHANNEL_0, 0); // stop the tone playing:
-	#endif
-	#if defined(_M5CARDPUTER)
-	M5Cardputer.Speaker.stop();
-	#endif
-	#if defined(USE_MIDI)
-	synth.setAllNotesOff(0);
-	#endif
-
+		tone(BUZZER_PIN,0);
 	}
-	else
-	if (freqtmp>=0) {
+	else if (freqtmp>=0) {
 		// play
 		//freq2 = (1000000 / freqtmp);
 		_8253_dat.setsound = 1;
-		//mzbeep_setFreq(freqtmp);
-    //Serial1.println(freqtmp);
-    //M5.Speaker.mute();
-    //M5.Speaker.tone(freqtmp);
-    if(mzConfig.enableSound){
-	#if defined(USE_SPEAKER_G25)||defined(USE_SPEAKER_G26)||defined(_M5STICKCPLUS)
-	if(freqtmp > 0){
-		ledcWriteTone(LEDC_CHANNEL_0, 1000000 / freqtmp);
-	}else{
-		ledcWriteTone(LEDC_CHANNEL_0, 0);
-	}
-	#endif
-
-	#if defined(_M5CARDPUTER)
-	if(freqtmp > 0){
-		if(M5Cardputer.Speaker.isPlaying()==false ||preFreqtmp != freqtmp){
-			if(preFreqtmp != freqtmp){
-				preFreqtmp = freqtmp;
+		if(mzConfig.enableSound){
+			if(freqtmp > 0){
+				if(preFreqtmp != freqtmp){
+					if(preFreqtmp != freqtmp){
+						preFreqtmp = freqtmp;
+					}
+					tone(BUZZER_PIN,1000000 / freqtmp,1000);
 			}
-			M5Cardputer.Speaker.tone(1000000 / freqtmp, 1000, 1);
 		}
 	}else{
-			M5Cardputer.Speaker.tone(0, 1000, 1);
+			tone(BUZZER_PIN, 0);
 	}
-	#endif
 
-	#if defined(USE_MIDI)
-		if(freqtmp > 0){
-		if(preFreqtmp != freqtmp){
-			preFreqtmp = freqtmp;
-			synth.setNoteOn(0, (12.0*(log2((1000000 / freqtmp)/440.0))+69.0),127);
-			
-		}
-		}else{
-			synth.setAllNotesOff(0);
-		}
-	#endif
-
-	//ledcWriteTone(LEDC_CHANNEL_0, 500000 / freqtmp);
-    }
-    //Serial1.print("PLAY:");
-    //Serial1.println(1000000 / freqtmp);
 	}
 	else
 	{
-		// stop
-		//mzbeep_stop();
-    //M5.Speaker.mute();
-	#if defined(USE_SPEAKER_G25)||defined(USE_SPEAKER_G26)||defined(_M5STICKCPLUS)
-    ledcWriteTone(LEDC_CHANNEL_0, 0); // stop the tone playing:
-	#endif
-	#if defined(_M5CARDPUTER)
-			M5Cardputer.Speaker.stop();
-	#endif
+		tone(BUZZER_PIN,0);
 	}
 }
 
