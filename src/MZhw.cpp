@@ -659,16 +659,16 @@ void play8253(void)
 		_8253_dat.setsound = 1;
 		if(mzConfig.enableSound){
 			if(freqtmp > 0){
-				if(preFreqtmp != freqtmp){
-					if(preFreqtmp != freqtmp){
-						preFreqtmp = freqtmp;
-					}
-					tone(BUZZER_PIN,1000000 / freqtmp,1000);
+//				if(preFreqtmp != freqtmp){
+//					if(preFreqtmp != freqtmp){
+//						preFreqtmp = freqtmp;
+//					}
+					tone(BUZZER_PIN,1000000 / freqtmp);
+//				}
 			}
+		}else{
+				tone(BUZZER_PIN, 0);
 		}
-	}else{
-			tone(BUZZER_PIN, 0);
-	}
 
 	}
 	else

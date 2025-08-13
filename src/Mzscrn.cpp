@@ -206,18 +206,18 @@ void update_scrn_thread(){
           canvas.drawBitmap(cx * 8, (cy * 8) %40 , fontPtr, 8, 8, fgColor);
         }
           if((cy+1)%5 == 0){
-          canvas.pushSprite(0, 40 * drawIndex); 
+          canvas.pushSprite(0, 40 * drawIndex + 10); 
           drawIndex = drawIndex + 1;
           }
       }
       if(statusAreaMessage.equals("")==false){
           m5lcd.setTextColor(TFT_WHITE);
           m5lcd.setTextSize(1);
-          m5lcd.fillRect(0, 200, 320, 10, TFT_BLACK);
-          m5lcd.setCursor(0, 200);
+          m5lcd.fillRect(0, 220, 320, 10, TFT_BLACK);
+          m5lcd.setCursor(0, 220);
           m5lcd.print(statusAreaMessage);
       }else{
-          m5lcd.fillRect(0, 200, 320, 10, TFT_BLACK);
+          m5lcd.fillRect(0, 220, 320, 10, TFT_BLACK);
       }
       m5lcd.endWrite();
     }

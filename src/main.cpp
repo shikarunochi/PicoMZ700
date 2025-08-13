@@ -47,7 +47,7 @@ void setup() {
   m5lcd.println("MAIN START...");
   Serial1.println("MAIN_START");
   delay(1000);
-
+  m5lcd.clearDisplay(TFT_BLACK);
   mz80c_main();   
   exit(0);  
 }
