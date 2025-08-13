@@ -106,4 +106,6 @@ enum MSGQID
 // use 5000 Hz as a LEDC base frequency
 #define LEDC_BASE_FREQ     5000
 
+#define BUZZER_PIN 26
+
 #endif

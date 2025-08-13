@@ -334,6 +334,7 @@ void mz_free_mem(void)
 //--------------------------------------------------------------
 void monrom_load(void)
 {
+  String ROM_FILES[4] = {"1Z009.ROM", "NEWMON7.ROM", "SP-1002.ROM","NEWMON.ROM"};
   Serial1.println("mzConfig.romFile");
   Serial1.println(mzConfig.romFile);
   String romFile = mzConfig.romFile;
@@ -349,8 +350,21 @@ void monrom_load(void)
     romPath = String(ROM_DIRECTORY) + "/" + romFile;
     if (SD.exists(romPath) == false) 
     {
-      m5lcd.println("ROM FILE NOT EXIST");
-      m5lcd.printf("[%s]", romPath);
+      m5lcd.print("DEFAULT ROM FILE NOT EXIST");
+      m5lcd.printf("[%s]\n", romPath.c_str());
+      boolean romExist = false;
+      for(int romIndex = 0;romIndex < 4;romIndex++){
+        romPath = String(ROM_DIRECTORY) + "/" + ROM_FILES[romIndex];
+        if (SD.exists(romPath) == true){
+          romExist = true;
+          break;
+        } 
+      } 
+      if(romExist == false){
+          m5lcd.println("MONITOR ROM NOT FOUND!");
+          delay(5000);
+          return;
+      }
     }
   }
   File dataFile = SD.open(romPath, FILE_READ);
@@ -361,8 +375,9 @@ void monrom_load(void)
       offset++;
     }
     dataFile.close();
-    m5lcd.print("ROM FILE:");
-    m5lcd.println(romPath);
+    m5lcd.print("USE ROM FILE[");
+    m5lcd.print(romPath);
+    m5lcd.println("]");
     Serial1.println(":END READ ROM:" + romPath);
   } else {
     m5lcd.print("ROM FILE FAIL:");
