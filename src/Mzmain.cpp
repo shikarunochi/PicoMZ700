@@ -105,7 +105,8 @@ int wonderHouseKey();
 
 KeyBoard *_keyboard;
 
-#define SyncTime	17									/* 1/60 sec.(milsecond) */
+//#define SyncTime	17									/* 1/60 sec.(milsecond) */
+#define SyncTime	33									/* 1/30 sec.(milsecond) */
 
 #define MAX_FILES 128 // this affects memory
 
