@@ -663,7 +663,7 @@ void play8253(void)
 //					if(preFreqtmp != freqtmp){
 //						preFreqtmp = freqtmp;
 //					}
-					tone(BUZZER_PIN,1000000 / freqtmp);
+					tone(BUZZER_PIN,900000 / freqtmp);
 //				}
 			}
 		}else{
