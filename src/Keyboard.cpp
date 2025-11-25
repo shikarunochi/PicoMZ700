@@ -1,6 +1,6 @@
 // Keyboard class
 
-#include <keyboard.h>
+#include <Keyboard.h>
 
 PicoCalcKeyBoard::PicoCalcKeyBoard()
     : KeyBoard(), _i2c_inited(1), _keycheck(0) 

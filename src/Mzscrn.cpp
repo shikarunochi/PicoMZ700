@@ -105,6 +105,7 @@ int font_load(const char *fontfile)
   String fontFile = DEFAULT_FONT_FILE;
   File dataFile = SD.open(romDir + "/" + fontFile, FILE_READ);
   if (!dataFile) {
+    m5lcd.println("FONT FILE NOT FOUND!");
     Serial1.println("FONT FILE NOT FOUND");
     perror("Open font file");
     return -1;
