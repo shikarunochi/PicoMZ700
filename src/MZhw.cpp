@@ -110,9 +110,9 @@ void writeUINT32(File fp,UINT32 data){
 // MZTデータの読み込み
 int set_mztData(String mztFile)
 {
-	Serial1.println("setMZTStart");
+	Serial2.println("setMZTStart");
 	m5lcd.printf("\n[");
-    Serial1.println(mztFile);
+    Serial2.println(mztFile);
 	//FILE *fd;
 	unsigned char tmp_buf[128];
 	int bsize, bb, mzt_buf_tmp;
@@ -121,7 +121,7 @@ int set_mztData(String mztFile)
   String filePath = TAPE_DIRECTORY;
   filePath += "/" + mztFile;
 
-  Serial1.println(filePath);
+  Serial2.println(filePath);
   File fd = SD.open(filePath, FILE_READ);
   String tmpTapeDataFilePath = TAPE_DIRECTORY;
   tmpTapeDataFilePath += "/tmpMZTapeData";
@@ -130,15 +130,15 @@ int set_mztData(String mztFile)
   }
   File tmpTapeData = SD.open(tmpTapeDataFilePath, FILE_WRITE);
   tapeReadBufCount = 0;
-  Serial1.println("fileOpen");
+  Serial2.println("fileOpen");
 	if(fd == NULL)
 	{
 		// MZTファイルが開けなかった時はイジェクト
 		ts700.mzt_settape = 0;
 		sysst.tape = 0;
         delay(100);
-        Serial1.print("can't open:");
-        Serial1.println(filePath);
+        Serial2.print("can't open:");
+        Serial2.println(filePath);
         delay(100);
         fd.close();
 		return false;
@@ -216,7 +216,7 @@ int set_mztData(String mztFile)
 		bsize = tmp_buf[0x12] + (tmp_buf[0x13] << 8);
 
 		// ボディ
-		Serial1.printf("WriteBody:%d\n",mzt_buf_tmp,mzt_buf_tmp);
+		Serial2.printf("WriteBody:%d\n",mzt_buf_tmp,mzt_buf_tmp);
 		for(int i = 0; i < 437; i++)
 		{
 			mzt_buf_tmp++;
@@ -247,7 +247,7 @@ int set_mztData(String mztFile)
 		//mzt_buf[mzt_buf_tmp++] = 0xC0000000;
 	}
 	ts700.mzt_bsize = mzt_buf_tmp;
-	Serial1.printf("MZT size:%d\n", ts700.mzt_bsize);
+	Serial2.printf("MZT size:%d\n", ts700.mzt_bsize);
 	ts700.mzt_elapse = 0;
 	ts700.mzt_settape = 1;
 	if(ts700.mzt_bsize < 4000)
@@ -465,10 +465,10 @@ void mz_reset(void)
         // VRAMの初期化
         memset(mem + VID_START , 0, 0x0400);
         if(mzConfig.mzMode == MZMODE_700){
-          Serial1.println("VRAMCLEAR:MZ-700MODE");
+          Serial2.println("VRAMCLEAR:MZ-700MODE");
           memset(mem + VID_START + 0x800 , 0x71, 0x0400);
         }else{
-          Serial1.println("VRAMCLEAR:MZ-80MODE");
+          Serial2.println("VRAMCLEAR:MZ-80MODE");
           memset(mem + VID_START + 0x800 , 0, 0x0400);
         }
   //}
@@ -483,9 +483,9 @@ void mz_reset(void)
 	ts700.cmt_play = 0;
 
 	/* Ｚ８０のリセット */
-	 Serial1.println("RESET:START");
+	 Serial2.println("RESET:START");
 	Z80_Reset();
-	Serial1.println("RESET:END");
+	Serial2.println("RESET:END");
 }
 
 /////////////////////////////////////////////////////////////////
@@ -774,12 +774,12 @@ int cmt_read(void)
 	//tbit = (elapsed % (27*428)) / 428;
   tword = elapsed / (27 * calcParam);
   tbit = (elapsed % (27 * calcParam)) / calcParam;
-  //Serial1.printf("cpu_tstates = %d, mzt_start = %d, mzt_elapsed = %d, elapsed = %d , tword = %d, tbit = %d\n",ts700.cpu_tstates ,ts700.mzt_start, ts700.mzt_elapse ,elapsed, tword, tbit );
+  //Serial2.printf("cpu_tstates = %d, mzt_start = %d, mzt_elapsed = %d, elapsed = %d , tword = %d, tbit = %d\n",ts700.cpu_tstates ,ts700.mzt_start, ts700.mzt_elapse ,elapsed, tword, tbit );
 
 	// データエンドの先ならゼロを返す
 	if(tword >= ts700.mzt_bsize)
 	{
-		//Serial1.println();
+		//Serial2.println();
 		updateStatusArea("");
 		ts700.cmt_play = 0;
 		ts700.cmt_tstates = 0;
@@ -795,10 +795,10 @@ int cmt_read(void)
 	percent = (tword * 100) / ts700.mzt_bsize;
 	if(percent - sysst.tape >= ts700.mzt_period)
 	{
-		//Serial1.printf("old=%d new=%d\n", sysst.tape, percent);
-    //Serial1.println();
+		//Serial2.printf("old=%d new=%d\n", sysst.tape, percent);
+    //Serial2.println();
 		String message = "TAPE READ:" + String(percent) + " %";
-		Serial1.printf("TAPE READ:%d\n" ,percent);
+		Serial2.printf("TAPE READ:%d\n" ,percent);
         updateStatusArea(message.c_str());
 		sysst.tape = percent;
 		xferFlag |= SYST_CMT;
@@ -817,7 +817,7 @@ int cmt_read(void)
 			int readDataCount = tmpTapeData.readBytes(tapeDataSaveBuf,1600);
 			for(int dataIndex = 0;dataIndex < readDataCount;dataIndex = dataIndex + 4){
 				tapeDataBuf[dataIndex / 4] = tapeDataSaveBuf[dataIndex] | (tapeDataSaveBuf[dataIndex+1] << 8) | (tapeDataSaveBuf[dataIndex+2] << 16) | (tapeDataSaveBuf[dataIndex+3] << 24);
-				//Serial1.printf("%d:%x\n",dataIndex / 4,tapeDataBuf[dataIndex / 4]);
+				//Serial2.printf("%d:%x\n",dataIndex / 4,tapeDataBuf[dataIndex / 4]);
 			}
 			tmpTapeData.close();
 			readTword = readTword + readDataCount / 4;
