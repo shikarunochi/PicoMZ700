@@ -23,12 +23,12 @@ int xorKey = 0x80;
 int lcdRotate = 0;
 
 void setup() {
-  //シリアルモニタ出力はGPIO 2/3 で Serial1 を使っています
-	Serial1.setTX(2);
-	Serial1.setRX(3);
-	Serial1.begin(115200);
+  //シリアルモニタ出力はGPIO 4/5 で Serial2 を使っています
+	Serial2.setTX(4);
+	Serial2.setRX(5);
+	Serial2.begin(115200);
 	delay(100);
-  Serial1.println("START!");
+  Serial2.println("START!");
   
   m5lcd.init();
 
@@ -40,12 +40,12 @@ void setup() {
   SPI.setCS(17);
   while (false == SD.begin(17, SPI))
    {
-      Serial1.println("SD Wait ...");
+      Serial2.println("SD Wait ...");
       delay(500);
    }
   m5lcd.println("SD CARD OK!");
   m5lcd.println("MAIN START...");
-  Serial1.println("MAIN_START");
+  Serial2.println("MAIN_START");
   delay(1000);
   m5lcd.clearDisplay(TFT_BLACK);
   mz80c_main();   

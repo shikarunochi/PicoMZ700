@@ -49,7 +49,7 @@ PicoCalcKeyBoard::_write_i2c_kbd()
     retval = i2c_write_timeout_us(I2C_KBD_MOD, I2C_KBD_ADDR, msg, 1, false, 500000);
     if ( retval == PICO_ERROR_GENERIC || retval == PICO_ERROR_TIMEOUT) 
     {
-        Serial1.printf( "i2c write error\r\n");
+        Serial2.printf( "i2c write error\r\n");
         return -1;
     }
     return 0;
@@ -78,7 +78,7 @@ PicoCalcKeyBoard::_read_i2c_kbd()
         retval = i2c_read_timeout_us(I2C_KBD_MOD, I2C_KBD_ADDR, (unsigned char *) &buff, 2, false, 500000);
         if (retval == PICO_ERROR_GENERIC || retval == PICO_ERROR_TIMEOUT) 
         {
-            Serial1.printf("i2c read error read\n");
+            Serial2.printf("i2c read error read\n");
             return -1;
         }
         _keycheck = 0;

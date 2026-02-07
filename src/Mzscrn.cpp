@@ -93,7 +93,7 @@ void set_scren_update_valid_flag(boolean flag){
 int font_load(const char *fontfile)
 {
   #if defined (USE_EXT_LCD)||defined(_M5STICKCPLUS)||defined(_M5ATOMS3)||defined(_M5CARDPUTER)
-    Serial1.println("USE INTERNAL FONT DATA");
+    Serial2.println("USE INTERNAL FONT DATA");
     return 0;
   #endif
   FILE *fdfont;
@@ -106,7 +106,7 @@ int font_load(const char *fontfile)
   File dataFile = SD.open(romDir + "/" + fontFile, FILE_READ);
   if (!dataFile) {
     m5lcd.println("FONT FILE NOT FOUND!");
-    Serial1.println("FONT FILE NOT FOUND");
+    Serial2.println("FONT FILE NOT FOUND");
     perror("Open font file");
     return -1;
   }
@@ -126,7 +126,7 @@ int font_load(const char *fontfile)
     }
     delay(10);
   }
-  Serial1.println("END READ ROM");
+  Serial2.println("END READ ROM");
 
   dataFile.close();
   return 0;
@@ -180,15 +180,15 @@ void update_scrn_thread(){
               fgColor = MZ700_COLOR[fgColorIndex];
             } else {
               fgColor = MZ700_COLOR[7];
-              Serial1.print("fgColorIndexError:");
-              Serial1.print(fgColorIndex);
+              Serial2.print("fgColorIndexError:");
+              Serial2.print(fgColorIndex);
             }
             if (bgColorIndex <= 7) {
               bgColor = MZ700_COLOR[bgColorIndex];
             } else {
               fgColor = MZ700_COLOR[0];
-              Serial1.print("bgColorIndexError:");
-              Serial1.print(bgColorIndex);
+              Serial2.print("bgColorIndexError:");
+              Serial2.print(bgColorIndex);
             }
           } else {
             fgColor = c_bright;
